@@ -4,7 +4,9 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require('bcryptjs');
 //Import User Model'
+
 const Users = require("./models/sql/sequelize.js").Users;
+
 
 //Serialize user
 passport.serializeUser(function (user, done) {
@@ -35,7 +37,10 @@ const localstrategy = new LocalStrategy(
         })
             .then((user) => {
                 if (user == null) {
-                    return done(null, false, req.flash("loginMsg","Username not found !"));
+                    //console.log("notFound");
+                    let a=req.flash("loginMsg","notFound");
+                    //console.log(a);
+                    return done(null, false,a );
                 } else {
 
                     bcrypt.compare(password, user.password).then((res) => {
@@ -45,7 +50,7 @@ const localstrategy = new LocalStrategy(
                             return done(null, user);
                         }
                         else {
-                            return done(null, false, req.flash("loginMsg","Password incorrect !"));
+                            return done(null, false, req.flash("loginMsg","incorrect"));
                         }
 
                     });
